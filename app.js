@@ -1,6 +1,10 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const mongoose = require("mongoose");
+require("dotenv").config();
+
+const { DB_HOST } = process.env;
 
 const contactsRouter = require("./routes/api/contacts");
 
@@ -22,5 +26,13 @@ app.use((err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;
   res.status(status).json({ message });
 });
+
+mongoose
+  .connect(DB_HOST)
+  .then(() => console.log("Database connection successful"))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
 
 module.exports = app;
