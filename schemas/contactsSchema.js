@@ -19,6 +19,7 @@ const contactsSchema = Joi.object({
       "string.pattern.base": "Invalid phone number format. Use (XXX) XXX-XXXX.",
       "any.required": "Missing required phone field.",
     }),
+  favorite: Joi.boolean().default(false),
 });
 
 module.exports = contactsSchema;
