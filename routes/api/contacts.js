@@ -15,20 +15,22 @@ const {
   isValidId,
   statusValidateBody,
 } = require("../../middlewares");
-const { contactsSchema, statusContactSchema } = require("../../schemas");
+const {
+  contactSchemas: { addSchema, statusContactSchema },
+} = require("../../models");
 
 router.get("/", controllerWrap(getContacts));
 
 router.get("/:contactId", isValidId, controllerWrap(getContactById));
 
-router.post("/", validateBody(contactsSchema), controllerWrap(addContact));
+router.post("/", validateBody(addSchema), controllerWrap(addContact));
 
 router.delete("/:contactId", isValidId, controllerWrap(removeContact));
 
 router.put(
   "/:contactId",
   isValidId,
-  validateBody(contactsSchema),
+  validateBody(addSchema),
   controllerWrap(updateContact)
 );
 
