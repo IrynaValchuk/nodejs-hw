@@ -2,6 +2,7 @@ const { Contact } = require("../../models");
 const { RequestError } = require("../../helpers");
 
 const addContact = async (req, res) => {
+  const { _id: owner } = req.user;
   const { email, phone } = req.body;
   const userEmail = await Contact.findOne({ email });
   const userPhone = await Contact.findOne({ phone });
@@ -13,7 +14,7 @@ const addContact = async (req, res) => {
     throw RequestError(409, "Field phone must be unique");
   }
 
-  const result = await Contact.create(req.body);
+  const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 
