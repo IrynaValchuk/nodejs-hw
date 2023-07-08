@@ -1,6 +1,4 @@
 const express = require("express");
-const router = express.Router();
-
 const {
   addContact,
   getContactById,
@@ -18,6 +16,8 @@ const {
 const {
   contactSchemas: { addSchema, statusContactSchema },
 } = require("../../models");
+
+const router = express.Router();
 
 router.get("/", controllerWrap(getContacts));
 
