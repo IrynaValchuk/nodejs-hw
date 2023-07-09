@@ -1,5 +1,6 @@
-const validateBody = require("../middlewares/validateBody");
-const statusValidateBody = require("../middlewares/statusValidateBody");
-const isValidId = require("../middlewares/isValidId");
+const validateBody = require("./validateBody");
+const statusValidateBody = require("./statusValidateBody");
+const isValidId = require("./isValidId");
+const authenticate = require("./authenticate");
 
-module.exports = { validateBody, isValidId, statusValidateBody };
+module.exports = { validateBody, isValidId, statusValidateBody, authenticate };
