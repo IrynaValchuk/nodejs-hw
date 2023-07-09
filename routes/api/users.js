@@ -4,11 +4,17 @@ const {
   login,
   logout,
   getCurrent,
+  updateUserSubscription,
 } = require("../../controllers/users");
 const { controllerWrap } = require("../../helpers");
-const { validateBody, authenticate } = require("../../middlewares");
 const {
-  userSchemas: { registerSchema, loginSchema },
+  validateBody,
+  authenticate,
+  statusValidateBody,
+  isValidId,
+} = require("../../middlewares");
+const {
+  userSchemas: { registerSchema, loginSchema, userSubscriptionSchema },
 } = require("../../models");
 
 const router = express.Router();
@@ -24,5 +30,13 @@ router.post("/login", validateBody(loginSchema), controllerWrap(login));
 router.post("/logout", authenticate, controllerWrap(logout));
 
 router.get("/current", authenticate, controllerWrap(getCurrent));
+
+router.patch(
+  "/:userId",
+  authenticate,
+  isValidId,
+  statusValidateBody(userSubscriptionSchema),
+  controllerWrap(updateUserSubscription)
+);
 
 module.exports = router;

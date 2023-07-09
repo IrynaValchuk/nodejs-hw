@@ -52,9 +52,22 @@ const loginSchema = Joi.object({
   password: Joi.string().required().min(7),
 });
 
+const userSubscriptionSchema = Joi.object({
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .default("starter")
+    .required()
+    .messages({
+      "any.required": "Missing field subscription",
+      "any.only":
+        "Allowed values for this field are: 'starter', 'pro', 'business'",
+    }),
+});
+
 const userSchemas = {
   registerSchema,
   loginSchema,
+  userSubscriptionSchema,
 };
 
 const User = model("user", userSchema);
