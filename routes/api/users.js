@@ -1,5 +1,10 @@
 const express = require("express");
-const { register, login, logout } = require("../../controllers/users");
+const {
+  register,
+  login,
+  logout,
+  getCurrent,
+} = require("../../controllers/users");
 const { controllerWrap } = require("../../helpers");
 const { validateBody, authenticate } = require("../../middlewares");
 const {
@@ -17,5 +22,7 @@ router.post(
 router.post("/login", validateBody(loginSchema), controllerWrap(login));
 
 router.post("/logout", authenticate, controllerWrap(logout));
+
+router.get("/current", authenticate, controllerWrap(getCurrent));
 
 module.exports = router;
