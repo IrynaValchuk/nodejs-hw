@@ -8,6 +8,9 @@ const avatarDir = path.join(__dirname, "../", "../", "public", "avatars");
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
+  if (!req.file) {
+    throw RequestError(400, "File is required");
+  }
   const { path: tmpUpload, originalname } = req.file;
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarDir, filename);
@@ -18,7 +21,7 @@ const updateAvatar = async (req, res) => {
     image.resize(250, 250);
     await image.writeAsync(resultUpload);
   } catch (err) {
-    throw RequestError(404);
+    throw RequestError(400);
   }
 
   const avatarURL = path.join("avatars", filename);
