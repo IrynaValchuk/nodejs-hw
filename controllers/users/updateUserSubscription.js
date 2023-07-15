@@ -2,8 +2,8 @@ const { User } = require("../../models");
 const { RequestError } = require("../../helpers");
 
 const updateUserSubscription = async (req, res) => {
-  const id = req.params.userId;
-  const result = await User.findByIdAndUpdate(id, req.body, {
+  const { _id } = req.user;
+  const result = await User.findByIdAndUpdate(_id, req.body, {
     new: true,
   });
   if (!result) {

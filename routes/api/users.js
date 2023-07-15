@@ -5,13 +5,14 @@ const {
   logout,
   getCurrent,
   updateUserSubscription,
+  updateAvatar,
 } = require("../../controllers/users");
 const { controllerWrap } = require("../../helpers");
 const {
   validateBody,
   authenticate,
   statusValidateBody,
-  isValidId,
+  upload,
 } = require("../../middlewares");
 const {
   userSchemas: { registerSchema, loginSchema, userSubscriptionSchema },
@@ -32,11 +33,17 @@ router.post("/logout", authenticate, controllerWrap(logout));
 router.get("/current", authenticate, controllerWrap(getCurrent));
 
 router.patch(
-  "/:userId",
+  "/",
   authenticate,
-  isValidId,
   statusValidateBody(userSubscriptionSchema),
   controllerWrap(updateUserSubscription)
+);
+
+router.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  controllerWrap(updateAvatar)
 );
 
 module.exports = router;
