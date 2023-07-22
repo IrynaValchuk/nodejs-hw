@@ -31,6 +31,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -45,7 +53,16 @@ const registerSchema = Joi.object({
     "string.pattern.base": "Invalid email format. Use «nick@gmail.com».",
     "any.required": "Missing required email field.",
   }),
-  password: Joi.string().required().min(7),
+  password: Joi.string().required().min(7).messages({
+    "any.required": "Missing required password field.",
+  }),
+});
+
+const emailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "string.pattern.base": "Invalid email format. Use «nick@gmail.com».",
+    "any.required": "Missing required email field.",
+  }),
 });
 
 const loginSchema = Joi.object({
@@ -53,7 +70,9 @@ const loginSchema = Joi.object({
     "string.pattern.base": "Invalid email format. Use «nick@gmail.com».",
     "any.required": "Missing required email field.",
   }),
-  password: Joi.string().required().min(7),
+  password: Joi.string().required().min(7).messages({
+    "any.required": "Missing required password field.",
+  }),
 });
 
 const userSubscriptionSchema = Joi.object({
@@ -70,6 +89,7 @@ const userSubscriptionSchema = Joi.object({
 
 const userSchemas = {
   registerSchema,
+  emailSchema,
   loginSchema,
   userSubscriptionSchema,
 };
