@@ -6,6 +6,8 @@ const {
   getCurrent,
   updateUserSubscription,
   updateAvatar,
+  verifyEmail,
+  resendVerifyEmail,
 } = require("../../controllers/users");
 const { controllerWrap } = require("../../helpers");
 const {
@@ -15,7 +17,12 @@ const {
   upload,
 } = require("../../middlewares");
 const {
-  userSchemas: { registerSchema, loginSchema, userSubscriptionSchema },
+  userSchemas: {
+    registerSchema,
+    emailSchema,
+    loginSchema,
+    userSubscriptionSchema,
+  },
 } = require("../../models");
 
 const router = express.Router();
@@ -24,6 +31,14 @@ router.post(
   "/register",
   validateBody(registerSchema),
   controllerWrap(register)
+);
+
+router.get("/verify/:verificationToken", controllerWrap(verifyEmail));
+
+router.post(
+  "/verify",
+  statusValidateBody(emailSchema),
+  controllerWrap(resendVerifyEmail)
 );
 
 router.post("/login", validateBody(loginSchema), controllerWrap(login));
